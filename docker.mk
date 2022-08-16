@@ -1,10 +1,14 @@
 include .env
 
-.PHONY: up down stop prune ps shell wp logs mutagen
+.PHONY: init up down stop prune ps shell wp logs mutagen
 
 default: up
 
 WP_ROOT ?= /var/www/html/
+
+## install and init wordpress
+init:
+	docker-compose exec php init_wordpress
 
 ## help	:	Print commands help.
 help : docker.mk
