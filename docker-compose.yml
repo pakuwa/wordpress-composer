@@ -43,14 +43,14 @@ services:
 #    # For XHProf and Xdebug profiler traces
 #    - files:/mnt/files
 
-  crond:
-    image: wodby/wordpress-php:$PHP_TAG
-    container_name: "${PROJECT_NAME}_crond"
-    environment:
-      CRONTAB: "0 * * * * wp cron event run --due-now --path=/var/www/html"
-    command: sudo crond -f -d 0
-    volumes:
-    - ./:/var/www/html:cached
+#  crond:
+#    image: wodby/wordpress-php:$PHP_TAG
+#    container_name: "${PROJECT_NAME}_crond"
+#    environment:
+#      CRONTAB: "0 * * * * wp cron event run --due-now --path=/var/www/html/web"
+#    command: sudo crond -f -d 0
+#    volumes:
+#    - ./:/var/www/html:cached
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/wordpress/local#docker-for-mac
 #    - wordpress:/var/www/html
 
