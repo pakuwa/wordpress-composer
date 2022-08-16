@@ -10,9 +10,9 @@ services:
       MYSQL_DATABASE: $DB_NAME
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
-#    volumes:
+    volumes:
 #    - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
-#    - /path/to/mariadb/data/on/host:/var/lib/mysql # I want to manage volumes manually.
+    - ./data/mariadb:/var/lib/mysql # I want to manage volumes manually.
 
   php:
     image: wodby/wordpress-php:$PHP_TAG
@@ -72,12 +72,12 @@ services:
     labels:
     - "traefik.http.routers.${PROJECT_NAME}_nginx.rule=Host(`${PROJECT_BASE_URL}`)"
 
-  mailhog:
-    image: mailhog/mailhog
-    container_name: "${PROJECT_NAME}_mailhog"
-    labels:
-    - "traefik.http.services.${PROJECT_NAME}_mailhog.loadbalancer.server.port=8025"
-    - "traefik.http.routers.${PROJECT_NAME}_mailhog.rule=Host(`mailhog.${PROJECT_BASE_URL}`)"
+#  mailhog:
+#    image: mailhog/mailhog
+#    container_name: "${PROJECT_NAME}_mailhog"
+#    labels:
+#    - "traefik.http.services.${PROJECT_NAME}_mailhog.loadbalancer.server.port=8025"
+#    - "traefik.http.routers.${PROJECT_NAME}_mailhog.rule=Host(`mailhog.${PROJECT_BASE_URL}`)"
 
 #  apache:
 #    image: wodby/apache:$APACHE_TAG
