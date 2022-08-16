@@ -1,3 +1,6 @@
+# Reference
+[WordPress - Local environment - Mount my codebase](https://wodby.com/docs/1.0/stacks/wordpress/local/#mount-my-codebase)
+
 # Composer Template for WordPress Projects
 
 This project template should provide a kickstart for managing your site dependencies with [Composer](https://getcomposer.org/).
