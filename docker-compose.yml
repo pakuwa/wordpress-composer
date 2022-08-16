@@ -10,6 +10,7 @@ services:
       MYSQL_DATABASE: $DB_NAME
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
+#      MYSQL_SLOW_QUERY_LOG: 1 # enable slow query log. show variables like 'slow_query%'; log file in ./data/mariadb
     volumes:
 #    - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
     - ./data/mariadb:/var/lib/mysql # I want to manage volumes manually.
