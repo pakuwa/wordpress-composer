@@ -5,3 +5,4 @@ mutagen.yml.lock
 .vscode
 .DS_Store
 data
+composer.lock
