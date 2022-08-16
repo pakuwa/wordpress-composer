@@ -1,3 +1,5 @@
 /.idea
 /web
 /vendor
+mutagen.yml.lock
+.vscode
