@@ -4,11 +4,18 @@ include .env
 
 default: up
 
-WP_ROOT ?= /var/www/html/
+WP_ROOT ?= /var/www/html/web
 
-## install and init wordpress
-init:
-	docker-compose exec php init_wordpress
+## init   :	up env, install and init wordpress
+init: up
+	docker run --rm --interactive --tty --volume $(PWD):/app --volume $(HOME)/.composer:/tmp composer install
+	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") cp $(WP_ROOT)/wp-config-sample.php $(WP_ROOT)/wp-config.php
+	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/database_name_here/$(DB_NAME)/" "$(WP_ROOT)/wp-config.php"
+	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/username_here/$(DB_USER)/" "$(WP_ROOT)/wp-config.php"
+	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/password_here/$(DB_PASSWORD)/" "$(WP_ROOT)/wp-config.php"
+	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/'DB_HOST', 'localhost'/'DB_HOST', '$(DB_HOST)'/" "$(WP_ROOT)/wp-config.php"
+	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/'DB_CHARSET', 'utf8'/'DB_CHARSET', '$(DB_CHARSET)'/" "$(WP_ROOT)/wp-config.php"
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") wp --path=$(WP_ROOT) config shuffle-salts
 
 ## help	:	Print commands help.
 help : docker.mk
