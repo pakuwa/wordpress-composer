@@ -6,3 +6,5 @@ mutagen.yml.lock
 .DS_Store
 data
 composer.lock
+nginx.access.log
+nginx.error.log
