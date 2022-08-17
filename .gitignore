@@ -5,7 +5,6 @@ mutagen.yml.lock
 .vscode
 .DS_Store
 data
-composer.lock
 nginx.access.log
 nginx.error.log
 .env
