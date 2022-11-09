@@ -225,15 +225,15 @@ services:
 #    labels:
 #    - "traefik.http.routers.${PROJECT_NAME}_xhprof.rule=Host(`xhprof.${PROJECT_BASE_URL}`)"
 
-  traefik:
-    image: traefik:v2.0
-    container_name: "${PROJECT_NAME}_traefik"
-    command: --api.insecure=true --providers.docker
-    ports:
-    - '80:80'
-    - '8080:8080' # Dashboard
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+#  traefik:
+#    image: traefik:v2.0
+#    container_name: "${PROJECT_NAME}_traefik"
+#    command: --api.insecure=true --providers.docker
+#    ports:
+#    - '80:80'
+#    - '8080:8080' # Dashboard
+#    volumes:
+#    - /var/run/docker.sock:/var/run/docker.sock
 
 #x-mutagen:
 #  sync:
