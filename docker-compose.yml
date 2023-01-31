@@ -38,7 +38,7 @@ services:
 #      PHP_XDEBUG_CLIENT_HOST: 10.0.75.1 # Windows
 #      PHP_XDEBUG_LOG: /tmp/php-xdebug.log
     volumes:
-    - ./:/var/www/html:cached
+    - ./web:/var/www/html:cached
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/wordpress/local#docker-for-mac
 #    - wordpress:/var/www/html
 #    # For XHProf and Xdebug profiler traces
