@@ -48,10 +48,10 @@ services:
 #    image: wodby/wordpress-php:$PHP_TAG
 #    container_name: "${PROJECT_NAME}_crond"
 #    environment:
-#      CRONTAB: "0 * * * * wp cron event run --due-now --path=/var/www/html/web"
+#      CRONTAB: "0 * * * * wp cron event run --due-now --path=/var/www/html"
 #    command: sudo crond -f -d 0
 #    volumes:
-#    - ./:/var/www/html:cached
+#      - ./web:/var/www/html:cached
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/wordpress/local#docker-for-mac
 #    - wordpress:/var/www/html
 
@@ -65,11 +65,11 @@ services:
       NGINX_ERROR_LOG_LEVEL: warn
       NGINX_BACKEND_HOST: php
       NGINX_VHOST_PRESET: wordpress
-      NGINX_SERVER_ROOT: /var/www/html/web
-      NGINX_LOG_FORMAT_OVERRIDE: ${NGINX_LOG_FORMAT}
-      NGINX_CONF_INCLUDE: /var/www/html/vhost.conf
+      #NGINX_SERVER_ROOT: /var/www/html/subdir
+      #NGINX_LOG_FORMAT_OVERRIDE: ${NGINX_LOG_FORMAT}
+      #NGINX_CONF_INCLUDE: /var/www/html/vhost.conf
     volumes:
-    - ./:/var/www/html:cached
+    - ./web:/var/www/html:cached
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/wordpress/local#docker-for-mac
 #    - wordpress:/var/www/html
     labels:
@@ -225,15 +225,15 @@ services:
 #    labels:
 #    - "traefik.http.routers.${PROJECT_NAME}_xhprof.rule=Host(`xhprof.${PROJECT_BASE_URL}`)"
 
-#  traefik:
-#    image: traefik:v2.0
-#    container_name: "${PROJECT_NAME}_traefik"
-#    command: --api.insecure=true --providers.docker
-#    ports:
-#    - '80:80'
-#    - '8080:8080' # Dashboard
-#    volumes:
-#    - /var/run/docker.sock:/var/run/docker.sock
+  traefik:
+    image: traefik:v2.0
+    container_name: "${PROJECT_NAME}_traefik"
+    command: --api.insecure=true --providers.docker
+    ports:
+      - '8000:80'
+    #    - '8080:8080' # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 #x-mutagen:
 #  sync:
