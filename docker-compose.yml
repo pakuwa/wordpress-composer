@@ -38,7 +38,7 @@ services:
 #      PHP_XDEBUG_CLIENT_HOST: 10.0.75.1 # Windows
 #      PHP_XDEBUG_LOG: /tmp/php-xdebug.log
     volumes:
-    - ./web:/var/www/html:cached
+    - ./web:/var/www/html
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/wordpress/local#docker-for-mac
 #    - wordpress:/var/www/html
 #    # For XHProf and Xdebug profiler traces
@@ -51,7 +51,7 @@ services:
 #      CRONTAB: "0 * * * * wp cron event run --due-now --path=/var/www/html"
 #    command: sudo crond -f -d 0
 #    volumes:
-#      - ./web:/var/www/html:cached
+#      - ./web:/var/www/html
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/wordpress/local#docker-for-mac
 #    - wordpress:/var/www/html
 
@@ -69,7 +69,7 @@ services:
       #NGINX_LOG_FORMAT_OVERRIDE: ${NGINX_LOG_FORMAT}
       #NGINX_CONF_INCLUDE: /var/www/html/vhost.conf
     volumes:
-    - ./web:/var/www/html:cached
+    - ./web:/var/www/html
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/wordpress/local#docker-for-mac
 #    - wordpress:/var/www/html
     labels:
@@ -92,7 +92,7 @@ services:
 #      APACHE_BACKEND_HOST: php
 #      APACHE_VHOST_PRESET: php
 #    volumes:
-#    - ./:/var/www/html:cached
+#    - ./:/var/www/html
 ## Alternative for macOS users: Mutagen https://wodby.com/docs/stacks/wordpress/local#docker-for-mac
 #    - wordpress:/var/www/html
 #    labels:

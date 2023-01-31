@@ -1,25 +1,29 @@
 include .env
 
-.PHONY: init up down stop prune ps shell wp logs mutagen
+.PHONY: install up down stop prune ps shell wp logs mutagen wp-download wp-config
 
 default: up
 
-WP_ROOT ?= /var/www/html/web
-
-## init   :	up env, install and init wordpress
-init: up
-	docker run --rm --interactive --tty --volume $(PWD):/app --volume $(HOME)/.composer:/tmp composer install
-	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") cp $(WP_ROOT)/wp-config-sample.php $(WP_ROOT)/wp-config.php
-	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/database_name_here/$(DB_NAME)/" "$(WP_ROOT)/wp-config.php"
-	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/username_here/$(DB_USER)/" "$(WP_ROOT)/wp-config.php"
-	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/password_here/$(DB_PASSWORD)/" "$(WP_ROOT)/wp-config.php"
-	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/'DB_HOST', 'localhost'/'DB_HOST', '$(DB_HOST)'/" "$(WP_ROOT)/wp-config.php"
-	docker exec -ti -e COLUMNS=$(shell tput cols) -e LINES=$(shell tput lines) $(shell docker ps --filter name='$(PROJECT_NAME)_$(or $(filter-out $@,$(MAKECMDGOALS)), 'php')' --format "{{ .ID }}") sed -i "s/'DB_CHARSET', 'utf8'/'DB_CHARSET', '$(DB_CHARSET)'/" "$(WP_ROOT)/wp-config.php"
-	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") wp --path=$(WP_ROOT) config shuffle-salts
+WP_ROOT ?= /var/www/html
 
 ## help	:	Print commands help.
 help : docker.mk
 	@sed -n 's/^##//p' $<
+
+wp-download:
+	@echo "Starting install wordpress via composer..."
+	docker run --rm --interactive --tty --volume $(PWD):/app --volume $(HOME)/.composer:/tmp composer install
+
+wp-config:
+	docker-compose exec php cp $(WP_ROOT)/wp-config-sample.php $(WP_ROOT)/wp-config.php
+	docker-compose exec php sed -i "s/database_name_here/$(DB_NAME)/" "$(WP_ROOT)/wp-config.php"
+	docker-compose exec php sed -i "s/username_here/$(DB_USER)/" "$(WP_ROOT)/wp-config.php"
+	docker-compose exec php sed -i "s/password_here/$(DB_PASSWORD)/" "$(WP_ROOT)/wp-config.php"
+	docker-compose exec php sed -i "s/'DB_HOST', 'localhost'/'DB_HOST', '$(DB_HOST)'/" "$(WP_ROOT)/wp-config.php"
+	docker-compose exec php sed -i "s/'DB_CHARSET', 'utf8'/'DB_CHARSET', '$(DB_CHARSET)'/" "$(WP_ROOT)/wp-config.php"
+	docker-compose exec php wp --path=$(WP_ROOT) config shuffle-salts
+
+install: wp-download up wp-config
 
 ## up	:	Start up containers.
 up:
