@@ -7,3 +7,4 @@ mutagen.yml.lock
 data
 nginx.access.log
 nginx.error.log
+composer.lock
